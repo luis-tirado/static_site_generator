@@ -57,11 +57,6 @@ def generate_page(from_path, template_path, dst_path, basepath):
     dst_content = template_content.replace("{{ Title }}", title)
     dst_content = dst_content.replace("{{ Content }}", node_to_html)
 
-    # replace any instances of href="/ with href="{basepath}
-    dst_content = dst_content.replace("href=\"/", f"href=\"{basepath}")
-    # replace any instances of src="/ with src="{basepath}
-    dst_content = dst_content.replace("src=\"/", f"src=\"{basepath}")
-
 
     # create filepath to make necessary directories
     dest_directory_filepath = os.path.dirname(dst_path)
