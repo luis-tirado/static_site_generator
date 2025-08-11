@@ -1,11 +1,19 @@
 import os
 import shutil
+import sys
 
 from copydirectory import copy_files
 from content_generator import generate_pages_recursive
 
 
 def main():
+    # BASEPATH is the root directory path where the website will be served from on the web server
+    # if the length of the list returned by sys.argv is greater than 1, basepath is the second element in the CLI commands list
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = '/'
+
     # static directory
     static_folder_filepath = "/home/luist/workspace/github.com/luis-tirado/static_site_generator/static"
 
@@ -16,19 +24,23 @@ def main():
     source_folder_filepath = "/home/luist/workspace/github.com/luis-tirado/static_site_generator/content"
     
     # destination directory
-    public_folder_filepath = "/home/luist/workspace/github.com/luis-tirado/static_site_generator/public"
+    docs_folder_filepath = "/home/luist/workspace/github.com/luis-tirado/static_site_generator/docs"
 
     # delete content in destination directory
-    print("Deleting public directory...")
-    if os.path.exists(public_folder_filepath):
-        shutil.rmtree(public_folder_filepath)
+    print("Deleting docs directory...")
+    if os.path.exists(docs_folder_filepath):
+        shutil.rmtree(docs_folder_filepath)
 
-    # move all files from static to public
-    print("Copying files from /static to /public")
-    copy_files(static_folder_filepath, public_folder_filepath)
+    # move all files from static to docs
+    print("Copying files from /static to /docs")
+    copy_files(static_folder_filepath, docs_folder_filepath)
 
-    # generate a page from content/index.md using template.html and write it to public/index.html
+    # generate a page from content/ to docs/, using template.html
+    # basepath 
     print("Generating content...")
-    generate_pages_recursive(source_folder_filepath, template_filepath, public_folder_filepath)
+    generate_pages_recursive(source_folder_filepath, template_filepath, docs_folder_filepath, basepath)
+
+    
+    
 
 main()

@@ -23,7 +23,7 @@ def convert_to_html_file(filename):
 
     return doc + html_extension
 
-def generate_pages_recursive(from_path, template_path, dst_path):
+def generate_pages_recursive(from_path, template_path, dst_path, basepath):
     src_content = os.listdir(from_path)
     
     for item in src_content:
@@ -34,12 +34,12 @@ def generate_pages_recursive(from_path, template_path, dst_path):
 
         if os.path.isfile(item_from_filepath):
             item_dst_filepath = os.path.join(dst_path, convert_to_html_file(item))
-            generate_page(item_from_filepath, template_path, item_dst_filepath)
+            generate_page(item_from_filepath, template_path, item_dst_filepath, basepath)
         else:
-            generate_pages_recursive(item_from_filepath, template_path, item_dst_filepath)
+            generate_pages_recursive(item_from_filepath, template_path, item_dst_filepath, basepath)
 
 
-def generate_page(from_path, template_path, dst_path):
+def generate_page(from_path, template_path, dst_path, basepath):
     print(f" * {from_path} --> {dst_path}\nUsing template: {template_path}\n")
 
     # use with open() to open a file, read it, and close it
@@ -56,6 +56,12 @@ def generate_page(from_path, template_path, dst_path):
     # replace title and content with proper data 
     dst_content = template_content.replace("{{ Title }}", title)
     dst_content = dst_content.replace("{{ Content }}", node_to_html)
+
+    # replace any instances of href="/ with href="{basepath}
+    dst_content = dst_content.replace("href=\"/", f"href=\"{basepath}")
+    # replace any instances of src="/ with src="{basepath}
+    dst_content = dst_content.replace("src=\"/", f"src=\"{basepath}")
+
 
     # create filepath to make necessary directories
     dest_directory_filepath = os.path.dirname(dst_path)
