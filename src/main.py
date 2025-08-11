@@ -9,10 +9,14 @@ from content_generator import generate_pages_recursive
 def main():
     # BASEPATH is the root directory path where the website will be served from on the web server
     # if the length of the list returned by sys.argv is greater than 1, basepath is the second element in the CLI commands list
+    
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
     else:
+        # for local testing, main.py is default to /
         basepath = '/'
+
+    print(f"Using basepath: *{basepath}")
 
     # static directory
     static_folder_filepath = "/home/luist/workspace/github.com/luis-tirado/static_site_generator/static"
