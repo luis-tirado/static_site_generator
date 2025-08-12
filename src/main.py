@@ -14,7 +14,7 @@ def main():
         basepath = sys.argv[1]
     else:
         # for local testing, main.py is default to /
-        basepath = '/'
+        basepath = "/"
 
     print(f"Using basepath: *{basepath}")
 
